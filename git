@@ -1,0 +1,7 @@
+[master (root-commit) e09c231] origin
+ 5 files changed, 20 insertions(+)
+ create mode 100644 .gitignore
+ create mode 100644 Cargo.lock
+ create mode 100644 Cargo.toml
+ create mode 100644 git
+ create mode 100644 src/main.rs
