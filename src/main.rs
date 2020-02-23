@@ -1,6 +1,26 @@
 extern crate num;
 use num::Complex;
 
+extern crate image;
+use image::ColorType;
+use image::png::PNGEncoder;
+use std::fs::File;
+
+use std::io::Result;
+
+fn write_image(filename: &str, pixels: &[u8], bounds: (usize, usize)) 
+    -> Result<()> {
+
+  let output = File::create(filename)?;
+
+  let encoder = PNGEncoder::new(output);
+  encoder.encode(&pixels,
+                 bounds.0 as u32,
+                 bounds.1 as u32,
+                 ColorType::Gray(8))?;
+
+  Ok(())
+}
 
 fn render(pixels: &mut [u8],
           bounds: (usize, usize),
@@ -62,4 +82,14 @@ fn escape_time(c: Complex<f64>, limit: u32) -> Option<u32> {
 
 fn main() {
     println!("Hello, world!");
+    
+    let bounds = (4000, 3000);
+    let mut pixels = vec![0; bounds.0 * bounds.1];
+    let upper_left = Complex{ re: -1.20, im: 0.35 };
+    let lower_right = Complex{ re: -1.0, im: 0.20 };
+    render(&mut pixels,
+          bounds,
+          upper_left,
+          lower_right);
+    write_image("moo.png", &pixels, bounds).expect("error writing PNG file");
 }
